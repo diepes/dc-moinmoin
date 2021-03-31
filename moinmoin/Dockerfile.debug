@@ -28,6 +28,10 @@ COPY moin-${version}.tar.gz /
 
 RUN pip install --prefix=/opt moin-${version}.tar.gz
 
+#Copy config in container, less to bind mount
+COPY /moin-config/  /config/moin/
+RUN ls -l /config/moin 
+
 ###########################################################
 FROM base
 

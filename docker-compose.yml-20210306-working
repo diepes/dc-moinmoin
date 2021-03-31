@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  moin:
+    image: moinmoin:1.9.11-debug
+    ports:
+      - 8080:8080
+#    image: lukasnellen/moinmoin:1.9.10
+#    image: lukasnellen/moinmoin:1.9.10-debug
+#    image: lukasnellen/moinmoin:1.9.10-slim
+    restart: always
+    volumes:
+      - type: bind
+        source: ./moinmoin/moin-config
+        target: /config/moin
+        #- type: volume
+        #source: data
+        #target: /opt/share/moin/data
+      - type: bind
+        source: /var/lib/moinmoin/vigor/data
+        target: /opt/share/moin/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:wiki.vigor.nz"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.frontend.headers.SSLRedirect=true"
+  
+        #volumes:
+        #  data:
+      
+  
