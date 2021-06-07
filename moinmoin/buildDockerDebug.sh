@@ -8,7 +8,14 @@ MOINMOINVERSION=1.9.11
 
 #docker build --pull --build-arg version=${MOINMOINVERSION} -t lukasnellen/moinmoin -t lukasnellen/moinmoin:${MOINMOINVERSION} \
 #       -f Dockerfile .
-time docker build --pull --build-arg version=${MOINMOINVERSION} -t moinmoin:${MOINMOINVERSION}-debug \
-       -f Dockerfile.debug .
+
+# time docker build --pull --build-arg version=${MOINMOINVERSION} -t moinmoin:${MOINMOINVERSION}-debug \
+#       -f Dockerfile.debug .
+
 #docker build --pull --build-arg version=${MOINMOINVERSION} -t lukasnellen/moinmoin:${MOINMOINVERSION}-slim \
 #       -f Dockerfile.slim .
+
+# 202104
+time podman build --pull --build-arg version=${MOINMOINVERSION} -t moinmoin:${MOINMOINVERSION}-debug \
+       -f Dockerfile.debug .
+

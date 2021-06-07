@@ -47,14 +47,10 @@ class Config(multiconfig.DefaultConfig):
     #instance_dir = '/where/ever/your/instance/is'
     #instance_dir = wikiconfig_dir
     instance_dir = '/opt/share/moin'
-
     # Where your own wiki pages are (make regular backups of this directory):
     data_dir = os.path.join(instance_dir, 'data', '') # path with trailing /
-    print("PES data_dir",data_dir)
-
     # Where system and help pages are (you may exclude this from backup):
     data_underlay_dir = os.path.join(instance_dir, 'underlay', '') # path with trailing /
-    print("PES data_underlay_dir",data_underlay_dir)
 
     # The URL prefix we use to access the static stuff (img, css, js).
     # Note: moin runs a static file server at url_prefix_static path (relative
@@ -78,10 +74,10 @@ class Config(multiconfig.DefaultConfig):
     # name of entry page / front page [Unicode], choose one of those:
 
     # a) if most wiki content is in a single language
-    #page_front_page = u"MyStartingPage"
+    page_front_page = u"MyStartingPage"
 
     # b) if wiki content is maintained in many languages
-    page_front_page = u"FrontPage"
+    # page_front_page = u"FrontPage"
     # The interwiki name used in interwiki links
     interwikiname = u'vigor'
     # Show the interwiki name (and link it to page_front_page) in the Theme,
