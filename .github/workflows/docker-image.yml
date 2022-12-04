@@ -24,6 +24,6 @@ jobs:
           tags: $(date +%Y%m%d), latest
           registry: docker.io
           directory: moinmoin
-          dockerfile: Dockerfile.debug
+          dockerfile: moinmoin/Dockerfile.debug
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
