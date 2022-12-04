@@ -19,11 +19,11 @@ jobs:
     #  run: docker build . --file Dockerfile --tag debug:latest
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
+      working-directory: ./moinmoin
       with:
           image: diepes/moinmoin
           tags: $(date +%Y%m%d), latest
           registry: docker.io
-          directory: moinmoin
-          dockerfile: moinmoin/Dockerfile.debug
+          dockerfile: Dockerfile.debug
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
