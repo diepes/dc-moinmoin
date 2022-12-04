@@ -46,7 +46,7 @@ RUN apt-get install --no-install-recommends --yes \
     python-xapian \
 # web runner
     gunicorn \
-# degug/test helpers    
+# debug/test helpers    
     less \
     aptitude \
     procps \
