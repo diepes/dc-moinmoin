@@ -11,7 +11,7 @@ RUN apt-get update && \
 ###########################################################
 FROM base AS build
 
-ARG version=1.9.10
+ARG version=1.9.11
 
 LABEL maintainers="Lukas Nellen <lukas@nucleares.unam.mx>" \
       name="MoinMoin stand-alone servers" 
