@@ -28,10 +28,6 @@ COPY moinmoin/moin-${version}.tar.gz /
 
 RUN pip install --prefix=/opt moin-${version}.tar.gz
 
-#Copy config in container, less to bind mount
-COPY moinmoin/moin-config/  /config/moin/
-RUN ls -l /config/moin 
-
 ###########################################################
 FROM base
 
@@ -56,13 +52,17 @@ RUN apt-get install --no-install-recommends --yes \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /opt /opt
-RUN mkdir /config
+RUN mkdir --parents /config/moin
+#Copy config in container, less to bind mount
+COPY moinmoin/moin-config/  /config/moin/
+RUN ls -l /config/moin 
+
 
 ENV PYTHONPATH=/opt/lib/python2.7/site-packages:/config/moin \
  PATH=/opt/bin:${PATH}
 
 EXPOSE 8080
 
-COPY moinmoin/entrypoint.sh /
+COPY moinmoin/entrypoint* /
 
 ENTRYPOINT [ "/entrypoint.sh" ]

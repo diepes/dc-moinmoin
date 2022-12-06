@@ -54,6 +54,6 @@ ENV PYTHONPATH=/opt/lib/python2.7/site-packages:/config/moin \
 
 EXPOSE 8080
 
-COPY entrypoint.sh /
+COPY entrypoint* /
 
 ENTRYPOINT [ "/entrypoint.sh" ]
