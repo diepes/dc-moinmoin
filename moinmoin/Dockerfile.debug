@@ -1,6 +1,7 @@
-ARG baseimage=debian:9
+ARG baseimage=debian:10
 FROM $baseimage AS base
 
+ARG  DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get upgrade --no-install-recommends --yes && \
     apt-get install --no-install-recommends --yes \
@@ -12,9 +13,7 @@ RUN apt-get update && \
 FROM base AS build
 
 ARG version=1.9.11
-
-LABEL maintainers="Lukas Nellen <lukas@nucleares.unam.mx>" \
-      name="MoinMoin stand-alone servers" 
+ARG  DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get install --no-install-recommends --yes \
 # build tools and helpers
@@ -31,8 +30,7 @@ RUN pip install --prefix=/opt moin-${version}.tar.gz
 ###########################################################
 FROM base
 
-LABEL maintainers="Lukas Nellen <lukas@nucleares.unam.mx>" \
-      name="MoinMoin stand-alone servers" 
+ARG  DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get install --no-install-recommends --yes \
 # required system packages
@@ -63,6 +61,6 @@ ENV PYTHONPATH=/opt/lib/python2.7/site-packages:/config/moin \
 
 EXPOSE 8080
 
-COPY moinmoin/entrypoint* /
+COPY moinmoin/entrypoint.sh /
 
 ENTRYPOINT [ "/entrypoint.sh" ]

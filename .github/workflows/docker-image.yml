@@ -17,12 +17,23 @@ jobs:
         uses: actions/checkout@v3
       #- name: Build the Docker image
       #  run: docker build . --file Dockerfile --tag debug:latest
-      - name: Build & push Docker image
+      - name: Build & push Docker moinmoin image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
             image: diepes/moinmoin
             tags: $(date +%Y%m%d), latest
             registry: docker.io
             dockerfile: Dockerfile
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+
+      - name: Build & push Docker backup restore image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+            image: diepes/backuprestore
+            tags: $(date +%Y%m%d), latest
+            registry: docker.io
+            directory: dbbackup
+            dockerfile: Dockerfile-BackupRestore
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}

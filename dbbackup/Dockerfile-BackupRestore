@@ -1,0 +1,37 @@
+ARG baseimage=debian:11
+FROM $baseimage AS base
+
+ARG  DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+    apt-get upgrade --no-install-recommends --yes && \
+    apt-get install --no-install-recommends --yes \
+# required system packages
+    iproute2 \
+# debug/test helpers    
+    less \
+    aptitude \
+    procps \
+    psmisc \
+    time \
+# download tools
+    curl \
+    unzip \
+    ca-certificates \
+# backup compression
+    gzip \
+    xz-utils \
+    pv \
+  && \
+# cleanup
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# install aws cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip" \
+    && cd /tmp; unzip /tmp/awscliv2.zip \
+    && /tmp/aws/install \
+    && rm /tmp/awscliv2.zip \
+    && rm -rf /tmp/aws
+
+COPY entrypoint* /
+
+ENTRYPOINT [ "/entrypointRestore.sh" ]

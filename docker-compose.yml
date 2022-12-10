@@ -3,14 +3,32 @@ version: "3.7"
 services:
   moin:
     #image: moinmoin:1.9.11-debug
-    build: .
+    build:
+      context: .
+      dockerfile: moinmoin/Dockerfile.debug
     ports:
       - 8080:8080
     restart: always
-    # volumes:
-    #   - type: bind
-    #     source: /var/lib/moinmoin/vigor/data
-    #     target: /opt/share/moin/data
+    volumes:
+      - type: bind
+        source: /tmp/moindata
+        target: /opt/share/moin/data
+  backuprestore:
+    build: 
+      context: dbbackup
+      dockerfile: Dockerfile-BackupRestore
+    volumes:
+      # - type: bind
+      #   source: $PWD/dbbackup/entrypointBackupRestore.sh
+      #   target: /entrypointBackupRestore.sh
+      - type: bind
+        source: /tmp/moindata
+        target: /opt/share/moin/data
+      - type: bind
+        source: $PWD/dbbackup/aws_credentials
+        target: /root/.aws/credentials
+
+    
   
       
   
