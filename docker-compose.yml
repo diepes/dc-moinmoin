@@ -13,22 +13,18 @@ services:
       - type: bind
         source: /tmp/moindata
         target: /opt/share/moin/data
+
   backuprestore:
+    #image: docker.io/diepes/backuprestore:latest
     build: 
       context: dbbackup
       dockerfile: Dockerfile-BackupRestore
+    env_file:
+      aws_credentials.env
+    environment:
+      - T=Test-docker-compose
+      #- AWS_DEFAULT_REGION=us-west-2
     volumes:
-      # - type: bind
-      #   source: $PWD/dbbackup/entrypointBackupRestore.sh
-      #   target: /entrypointBackupRestore.sh
       - type: bind
         source: /tmp/moindata
         target: /opt/share/moin/data
-      - type: bind
-        source: $PWD/dbbackup/aws_credentials
-        target: /root/.aws/credentials
-
-    
-  
-      
-  
