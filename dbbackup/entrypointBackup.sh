@@ -1,5 +1,5 @@
 #! /bin/sh
-echo "# Source entrypointBackupRestore.sh from $0"
+echo "# Source entrypointBackup.sh from $0"
 set -x 
 export GATEWAY=$(ip route list | awk '/default/ { print $3 }')
 tardirectory="/opt/share/moin/"
@@ -41,7 +41,13 @@ FILE=$( aws s3api list-objects-v2 \
 echo "Found: FILE=${FILE}"; echo "Write: f=$f"
 echo "Write: basename f >> $(basename $f)"
 
-# aws s3 cp "s3://${S3_BUCKET_NAME}/$FILE" .
+if [[ "${FILE}" == "${f}" ]]; then
+    echo "# Backup success latest file is ${f}"
+    exit 0
+else
+    echo "# ERROR: ${FILE} != ${f}"
+    sleep $(( 60*60*24 ))
+    exit 1
+fi
 
-
-echo "The End."; sleep 600
+echo "The End."; sleep 10
