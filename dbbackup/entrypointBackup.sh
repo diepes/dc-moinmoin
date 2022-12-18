@@ -4,7 +4,6 @@ source /entrypointConfig.sh
 
 echo "# Check if ls works ..."
 aws s3 ls s3://${S3_BUCKET_NAME}/
-aws s3 cp /entrypointBackup.sh s3://${S3_BUCKET_NAME}/test-${d}.txt
 echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ..."
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it
 #pv -t -r -b -s $(du -sb ${tardirectory} | awk '{print $1}') \
