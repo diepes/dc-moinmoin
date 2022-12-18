@@ -27,6 +27,7 @@ sleep 10
 echo "# get latest file in bucket ..."
 FILE=$( aws s3api list-objects-v2 \
           --bucket "${S3_BUCKET_NAME}" \
+          --prefix "${basefilename}" \
           --query 'sort_by(Contents, &LastModified)[-1].Key' \
           --output=text
       )
