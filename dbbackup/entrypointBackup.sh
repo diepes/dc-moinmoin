@@ -2,11 +2,10 @@
 echo "# entrypointBackup.sh from $0"
 source /entrypointConfig.sh
 
-set -x
-echo "#Check if ls works ..."
+echo "# Check if ls works ..."
 aws s3 ls s3://${S3_BUCKET_NAME}/
-aws s3 cp /entrypointBackup.sh s3://${S3_BUCKET_NAME}/test.txt
-echo "#start backup ..."
+aws s3 cp /entrypointBackup.sh s3://${S3_BUCKET_NAME}/test-${d}.txt
+echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ..."
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it
 #pv -t -r -b -s $(du -sb ${tardirectory} | awk '{print $1}') \
 #   --cursor --name "tar" --fineta |\
@@ -24,16 +23,19 @@ aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 
 # --expected-size $((1024*1024*300)) 
 # Now check if latest file is the one we just uploaded
+echo "# Upload to s3 done.  sleep 10sec ..."
+sleep 10
+echo "# get latest file in bucket ..."
 FILE=$( aws s3api list-objects-v2 \
           --bucket "${S3_BUCKET_NAME}" \
           --query 'sort_by(Contents, &LastModified)[-1].Key' \
           --output=text
       )
-echo "Found: s3 FILE=${FILE}"; echo "Write: f=$f"
-echo "Write: basename f >> $(basename $f)"
+echo "# Found: s3 latest FILE=${FILE}"
+echo "# We wrote: f=$f   \$(basename \$f)=$(basename $f)"
 
 if [[ "${FILE}" == "${f}" ]]; then
-    echo "# Backup success latest file is ${f}"
+    echo "# Backup success latest file match ${f}"
     exit 0
 else
     echo "# ERROR: ${FILE} != ${f}"
@@ -41,4 +43,4 @@ else
     exit 1
 fi
 
-echo "The End."; sleep 10
+echo "# The End."; sleep 1

@@ -22,3 +22,8 @@ if [[ "${AWS_ACCESS_KEY_ID}" == "" ]]; then
 else
     echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
 fi
+
+echo "#Debug $0"
+echo "# S3_BUCKET_NAME=${S3_BUCKET_NAME} tardirectory=${tardirectory}"
+echo "# d=${d} f=${f}"
+echo "# entrypointConfig.sh loaded"
