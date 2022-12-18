@@ -1,6 +1,6 @@
 #! /bin/sh
 echo "# entrypointBackup.sh from $0"
-source entrypointConfig.sh
+source /entrypointConfig.sh
 
 set -x 
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it

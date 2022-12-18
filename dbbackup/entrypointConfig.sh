@@ -15,6 +15,7 @@ d="$(date +%F-%Hh%M%z)"
 
 if [[ "${AWS_ACCESS_KEY_ID}" == "" ]]; then
     echo "ERROR: empty env AWS_ACCESS_KEY_ID"
+    echo "exit 1"
     exit 1
 else
     echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"

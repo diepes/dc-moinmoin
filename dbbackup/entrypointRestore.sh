@@ -1,13 +1,8 @@
 #! /bin/bash
 echo "# Source entrypointRestore.sh from $0"
-# set -x 
-export GATEWAY=$(ip route list | awk '/default/ { print $3 }')
+source /entrypointConfig.sh
 
-tardirectory="/opt/share/moin"
-#tardirectory="/var/lib/moinmoin/vigor"
-basefilename="backupMoinVigor"
-S3_BUCKET_NAME="backupVigor"
-S3_FILE_NAME_FILTER="${basefilename}-*"
+# set -x 
 
 if [[ -e "${tardirectory}/data/edit-log" ]]; then
     echo "Found ${tardirectory}/data/edit-log"
@@ -16,12 +11,6 @@ else
     ls -l ${tardirectory}/data/
 fi
 
-if [[ "${AWS_ACCESS_KEY_ID}" == "" ]]; then
-    echo "ERROR: empty env AWS_ACCESS_KEY_ID"
-    exit 1
-else
-    echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
-fi
 
 FILE=$( aws s3api list-objects-v2 \
           --bucket "${S3_BUCKET_NAME}" \
