@@ -19,13 +19,15 @@ services:
     build: 
       context: dbbackup
       dockerfile: Dockerfile-BackupRestore
-    command: [ "/entrypointRestore.sh"]
+    # command: [ "/entrypointRestore.sh"]
+    command: [ "/entrypointBackup.sh"]
     env_file:
       aws_credentials.env
     environment:
       - T=Test-docker-compose
+      - backupHostname=Local
       #- AWS_DEFAULT_REGION=us-west-2
     volumes:
       - type: bind
-        source: /tmp/moindata
+        source: /tmp/moindata-restore
         target: /opt/share/moin/data

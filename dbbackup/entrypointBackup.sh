@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 echo "# entrypointBackup.sh from $0"
 source /entrypointConfig.sh
 
@@ -32,7 +32,7 @@ if [[ "${FILE}" == "${f}" ]]; then
     exit 0
 else
     echo "# ERROR: ${FILE} != ${f}"
-    sleep $(( 60*60*24 ))
+    #sleep $(( 60*60*24 ))
     exit 1
 fi
 
