@@ -45,10 +45,12 @@ echo "# We wrote: f=$f   \$(basename \$f)=$(basename $f)"
 
 if [[ "${FILE}" == "${f}" ]]; then
     echo "# Backup success latest file match ${f}"
+    ElapsedTime
     exit 0
 else
     echo "# ERROR: ${FILE} != ${f}"
     #sleep $(( 60*60*24 ))
+    ElapsedTime
     exit 1
 fi
 
