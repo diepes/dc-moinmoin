@@ -25,7 +25,7 @@ nice -n18 tar --create -f - \
 nice -n19 xz --compress -5 \
              --check=crc64 \
              --memlimit=200MiB - |\
-pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --force --format $' %t %r %p %e  \n' |\
+pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --delay-start 20 --force --format $' %t %r %p %e  \n' |\
 aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 
 # --expected-size $((1024*1024*300)) 
