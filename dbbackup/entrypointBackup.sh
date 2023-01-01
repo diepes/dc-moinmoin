@@ -6,8 +6,12 @@ echo "# Check if ls works ..."
 aws s3 ls s3://${S3_BUCKET_NAME}/
 
 ElapsedTime
-UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-128k}"
-echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ...  UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}"
+UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-256k}"
+UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-185M}"
+# 2023-01-01 @128k backup to s3 24min, size in s3 183MB , rateimit to prevent high cpu usage
+#            try 256k
+
+echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ...  UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTES_EST=${UPLOAD_SIZE_BYTES_EST}"
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it
 #pv -t -r -b -s $(du -sb ${tardirectory} | awk '{print $1}') \
 #   --cursor --name "tar" --fineta |\
@@ -21,7 +25,7 @@ nice -n18 tar --create -f - \
 nice -n19 xz --compress -5 \
              --check=crc64 \
              --memlimit=200MiB - |\
-pv --numeric --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" |\
+pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --force --format $' %t %r %p %e  \n' |\
 aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 
 # --expected-size $((1024*1024*300)) 
