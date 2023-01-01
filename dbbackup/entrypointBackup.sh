@@ -6,12 +6,15 @@ echo "# Check if ls works ..."
 aws s3 ls s3://${S3_BUCKET_NAME}/
 
 ElapsedTime
-UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-128k}"
+UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-256k}"
 UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-185M}"
 # 2023-01-01 @128k backup to s3 24min, size in s3 183MB , rateimit to prevent high cpu usage
-#            try 256k used to high cpu go xz and tar, try 128+64=192, still high cpu and disk wait
+#  .b try 256k used to high cpu go xz and tar
+#  .c try 128+64=192, still high cpu and disk wait 20min to finish
+#  .d try 256k and resource.limit.cpu 20m
 
-echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ...  UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTES_EST=${UPLOAD_SIZE_BYTES_EST}"
+echo "# start backup ... s3://${S3_BUCKET_NAME}/${f} ..."
+echo "    UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTES_EST=${UPLOAD_SIZE_BYTES_EST}"
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it
 #pv -t -r -b -s $(du -sb ${tardirectory} | awk '{print $1}') \
 #   --cursor --name "tar" --fineta |\
