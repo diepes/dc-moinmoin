@@ -87,7 +87,9 @@ class Config(multiconfig.DefaultConfig):
 
     # Security ----------------------------------------------------------
     #PES 2013-03-28 limit All to only read.
-    acl_rights_default = u"Known:read,write,delete,revert All:read"
+    # acl_rights_default = u"Known:read,write,delete,revert All:read"
+    #PES 2024-12-29 only allow read.
+    acl_rights_default = u"Known:read All:read"
 
     # This is checked by some rather critical and potentially harmful actions,
     # like despam or PackageInstaller action:
@@ -132,7 +134,7 @@ class Config(multiconfig.DefaultConfig):
     # SMTP server, e.g. "mail.provider.com" (None to disable mail)
     #mail_smarthost = ""
 
-    # The return address, e.g u"Jürgen Wiki <noreply@mywiki.org>" [Unicode]
+    # The return address, e.g u"Jï¿½rgen Wiki <noreply@mywiki.org>" [Unicode]
     #mail_from = u""
 
     # "user pwd" if you need to use SMTP AUTH
