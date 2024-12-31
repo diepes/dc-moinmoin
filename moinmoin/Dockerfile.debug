@@ -27,8 +27,10 @@ COPY moinmoin/moin-${version}.tar.gz /
 # pip will untar and run setup.py to install moinmoin python package and files
 RUN pip install --prefix=/opt moin-${version}.tar.gz
 
+# moin underlay, and ls to debug
 COPY moinmoin/moin-${version}-underlay.tar.gz /
-RUN tar -xzf --directory /opt/share/moin/ moin-${version}-underlay.tar.gz
+RUN ls -l /opt/share/moin/
+RUN tar -xz --directory /opt/share/moin/ -f moin-${version}-underlay.tar.gz
 
 ###########################################################
 FROM base
