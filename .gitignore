@@ -1,3 +1,5 @@
 *~
 *.pyc
 aws_credentials.env
+.vscode/
+__pycache__/

@@ -24,8 +24,11 @@ RUN apt-get install --no-install-recommends --yes \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY moinmoin/moin-${version}.tar.gz /
-
+# pip will untar and run setup.py to install moinmoin python package and files
 RUN pip install --prefix=/opt moin-${version}.tar.gz
+
+COPY moinmoin/moin-${version}-underlay.tar.gz /
+RUN tar -xzf --directory /opt/share/moin/ moin-${version}-underlay.tar.gz
 
 ###########################################################
 FROM base
@@ -56,8 +59,8 @@ COPY moinmoin/moin-config/  /config/moin/
 RUN ls -l /config/moin 
 
 
-ENV PYTHONPATH=/opt/lib/python2.7/site-packages:/config/moin \
- PATH=/opt/bin:${PATH}
+ENV PYTHONPATH=/opt/lib/python2.7/site-packages:/config/moin
+ENV PATH=/opt/bin:${PATH}
 
 EXPOSE 8080
 
