@@ -195,8 +195,8 @@ class Config(multiconfig.DefaultConfig):
             #u"What is the opposite of 'day'?": ur"(night|nite)",
             # u"With what letter does the word 'africa' start ?": ur"(a|A)",
             #PES 20171213 fix wording.
-            u"Decimal 8 + Decimal 1 = Binary ?    ": ur"1001",
-            u"Decimal 8 + Decimal 3 = Binary ?    ": ur"1011",
+            u"Decimal 16 + Decimal 1 = Binary ?    ": ur"10001",
+            u"Decimal 16 + Decimal 3 = Binary ?    ": ur"10011",
             #u"6+6+(Answer to everyting)=?": ur"(54|\+54)",
             #u"3-7+(Answer to everyting)=?": ur"(38|\+38)",
             #u"5x5+(Answer to everyting)=?": ur"(67|\+67)",
