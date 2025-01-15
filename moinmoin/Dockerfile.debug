@@ -2,6 +2,10 @@ ARG baseimage=debian:10
 FROM $baseimage AS base
 
 ARG  DEBIAN_FRONTEND=noninteractive
+# Set locale environment variables to use UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 RUN apt-get update && \
     apt-get upgrade --no-install-recommends --yes && \
     apt-get install --no-install-recommends --yes \
@@ -15,6 +19,10 @@ FROM base AS build
 ARG version=1.9.11
 ARG  DEBIAN_FRONTEND=noninteractive
 
+# Set locale environment variables to use UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 RUN apt-get install --no-install-recommends --yes \
 # build tools and helpers
     python-pip \
@@ -27,9 +35,11 @@ COPY moinmoin/moin-${version}.tar.gz /
 # pip will untar and run setup.py to install moinmoin python package and files
 RUN pip install --prefix=/opt moin-${version}.tar.gz
 
-# moin underlay, and ls to debug
+# moin underlay
 COPY moinmoin/moin-${version}-underlay.tar.gz /
+# debug check if directory exists
 RUN ls -l /opt/share/moin/
+# tar extract to /opt/share/moin/
 RUN tar -xz --directory /opt/share/moin/ -f moin-${version}-underlay.tar.gz
 
 ###########################################################

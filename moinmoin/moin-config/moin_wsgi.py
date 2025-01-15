@@ -1,5 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 """
+    Copied from git@github.com:diepes/dc-moinmoin.git
+    
     MoinMoin - mod_wsgi driver script
 
     To use this, add those statements to your Apache's VirtualHost definition:

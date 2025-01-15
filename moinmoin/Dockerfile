@@ -1,5 +1,8 @@
 ARG baseimage=debian:9-slim
 FROM $baseimage AS base
+# Set locale environment variables to use UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 RUN apt-get update && \
     apt-get upgrade --no-install-recommends --yes && \
