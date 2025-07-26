@@ -5,6 +5,8 @@ Fork from https://github.com/lukasnellen/dc-moinmoin (2021-last update 3years ag
 
 Goal to run local MoinMoin wiki, that needs python2.7 on system with only python3+
 
+2025 - moinmoin v2 now in beta, probably time to move to pyton 3 soon.
+
 Build
 -----
 

@@ -21,15 +21,15 @@ echo "    UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTE
 #pv -t -r -b --wait \
 #   --cursor --name "xz" |\
 nice -n18 tar --create -f - \
-              --sparse --recursion \
-              -C ${tardirectory} \
-              --exclude "data/event-log" \
-              data |\
+            --sparse --recursion \
+            -C ${tardirectory} \
+            --exclude "data/event-log" \
+            data |\
 nice -n19 xz --compress -5 \
-             --check=crc64 \
-             --memlimit=200MiB - |\
+            --check=crc64 \
+            --memlimit=200MiB - |\
 pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --delay-start 20 --force --format $' %t %r %p %e  \n' |\
-aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
+aws s3 cp - s3://${S3_BUCKET_NAME}/${f} --tagging "${s3_tags}"
 
 # --expected-size $((1024*1024*300)) 
 # Now check if latest file is the one we just uploaded
@@ -38,11 +38,11 @@ echo "# Upload to s3 done.  sleep 10sec ..."
 sleep 10
 echo "# get latest file in bucket ..."
 FILE=$( aws s3api list-objects-v2 \
-          --bucket "${S3_BUCKET_NAME}" \
-          --prefix "${basefilename}" \
-          --query 'sort_by(Contents, &LastModified)[-1].Key' \
-          --output=text
-      )
+        --bucket "${S3_BUCKET_NAME}" \
+        --prefix "${basefilename}" \
+        --query 'sort_by(Contents, &LastModified)[-1].Key' \
+        --output=text
+    )
 echo "# Found: s3 latest FILE=${FILE}"
 echo "# We wrote: f=$f   \$(basename \$f)=$(basename $f)"
 
