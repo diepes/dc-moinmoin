@@ -24,6 +24,7 @@ echo "    UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTE
 if  [[ "${testrun}" == "true" ]]; then
     echo "# Testrun: uploading small test data to s3, just creating tar.gz file ..."
     f="testrun/${f}"
+    basefilename="testrun/${basefilename}"
     echo "Test data $(date -Is)" | gzip | aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 else
     nice -n18 tar --create -f - \
