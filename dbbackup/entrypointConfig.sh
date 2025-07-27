@@ -18,7 +18,6 @@ day_of_month="$(env TZ=Pacific/Auckland date +%d)"
 
 #S3_BUCKET_NAME="backupVigor"
 S3_BUCKET_NAME="backups.vigor.nz"
-S3_FILE_NAME_FILTER="${basefilename}-*"
 
 # AWS_SECRET_ACCESS_KEY - secret
 if [[ "${AWS_ACCESS_KEY_ID}" == "" ]]; then

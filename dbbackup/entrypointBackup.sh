@@ -56,7 +56,7 @@ aws s3api put-object-tagging --bucket "${S3_BUCKET_NAME}" --key "${f}" \
 echo "# sleep 10sec ..."
 sleep 10
 # Now check if latest file is the one we just uploaded
-echo "# get latest file in bucket ..."
+echo "# get latest file in bucket ... --bucket "${S3_BUCKET_NAME}" --prefix ${basefilename}"
 FILE=$( aws s3api list-objects-v2 \
         --bucket "${S3_BUCKET_NAME}" \
         --prefix "${basefilename}" \
