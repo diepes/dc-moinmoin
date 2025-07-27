@@ -12,16 +12,9 @@ backupHostname=$(hostname)
 # FullName
 f="${basefilename}/$(date +%Y)/$d-${basefilename}-${backupHostname:-vigor}.tar.xz"
 
-# Set s3 object tag for first day of month
+# Set s3 object tag for first day of month - used for s3 tags
 day_of_month="$(env TZ=Pacific/Auckland date +%d)"
-if [ "$day_of_month" -eq 1 ]; then
-    # Ensure that the tags follow S3 tagging rules:
-    #   keys and values must be URL-encoded if they contain special characters, e.g. space = %20
-    #   and each key-value pair must be separated by &.
-    s3_tags="first_day_of_month=true"
-else
-    s3_tags="first_day_of_month=false"
-fi
+
 
 #S3_BUCKET_NAME="backupVigor"
 S3_BUCKET_NAME="backups.vigor.nz"

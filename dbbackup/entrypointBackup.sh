@@ -29,13 +29,23 @@ nice -n19 xz --compress -5 \
             --check=crc64 \
             --memlimit=200MiB - |\
 pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --delay-start 20 --force --format $' %t %r %p %e  \n' |\
-aws s3 cp - s3://${S3_BUCKET_NAME}/${f} --tagging "${s3_tags}"
+aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 
 # --expected-size $((1024*1024*300)) 
-# Now check if latest file is the one we just uploaded
 ElapsedTime
-echo "# Upload to s3 done.  sleep 10sec ..."
+echo "# Upload to s3 done. adding tags ..."
+tag_key="first_day_of_month"
+if [ "$day_of_month" -eq 1 ]; then
+    tag_value="true"
+else
+    tag_value="false"
+fi
+aws s3api put-object-tagging --bucket "${S3_BUCKET_NAME}" --key "${f}" \
+    --tagging "{\"TagSet\": [{\"Key\": \"${tag_key}\", \"Value\": \"${tag_value}\"}]}"
+
+echo "# sleep 10sec ..."
 sleep 10
+# Now check if latest file is the one we just uploaded
 echo "# get latest file in bucket ..."
 FILE=$( aws s3api list-objects-v2 \
         --bucket "${S3_BUCKET_NAME}" \
