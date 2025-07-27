@@ -1,4 +1,4 @@
-ARG baseimage=debian:11
+ARG baseimage=debian:12
 FROM $baseimage AS base
 
 ARG  DEBIAN_FRONTEND=noninteractive
@@ -21,7 +21,7 @@ RUN apt-get update && \
     gzip \
     xz-utils \
     pv \
-  && \
+    && \
 # cleanup
     apt-get clean && rm -rf /var/lib/apt/lists/*
 

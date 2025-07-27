@@ -3,11 +3,12 @@ echo "# entrypointBackup.sh from $0"
 source /entrypointConfig.sh
 
 echo "# Check if ls works ..."
-aws s3 ls s3://${S3_BUCKET_NAME}/
+aws s3 ls s3://${S3_BUCKET_NAME}/${basefilename}/
 
 ElapsedTime
-UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-256k}"
-UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-185M}"
+UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-1024k}"
+UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-250M}"
+# 2025-07 ave size 240MB
 # 2023-01-01 @128k backup to s3 24min, size in s3 183MB , rateimit to prevent high cpu usage
 #  .b try 256k used to high cpu go xz and tar
 #  .c try 128+64=192, still high cpu and disk wait 20min to finish
@@ -28,7 +29,11 @@ nice -n18 tar --create -f - \
 nice -n19 xz --compress -5 \
             --check=crc64 \
             --memlimit=200MiB - |\
-pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" --size "${UPLOAD_SIZE_BYTES_EST}" --interval 30 --delay-start 20 --force --format $' %t %r %p %e  \n' |\
+pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" \
+    --size "${UPLOAD_SIZE_BYTES_EST}" \
+    --interval 30 --delay-start 20 \
+    --force --format $' %t %r %p %e  \n' \
+    --buffer-size 100m |\
 aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
 
 # --expected-size $((1024*1024*300)) 
@@ -40,6 +45,7 @@ if [ "$day_of_month" -eq 1 ]; then
 else
     tag_value="false"
 fi
+# 
 aws s3api put-object-tagging --bucket "${S3_BUCKET_NAME}" --key "${f}" \
     --tagging "{\"TagSet\": [{\"Key\": \"${tag_key}\", \"Value\": \"${tag_value}\"}]}"
 

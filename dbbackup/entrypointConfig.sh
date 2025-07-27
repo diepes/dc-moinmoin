@@ -20,17 +20,17 @@ day_of_month="$(env TZ=Pacific/Auckland date +%d)"
 S3_BUCKET_NAME="backups.vigor.nz"
 S3_FILE_NAME_FILTER="${basefilename}-*"
 
-
+# AWS_SECRET_ACCESS_KEY - secret
 if [[ "${AWS_ACCESS_KEY_ID}" == "" ]]; then
-    echo "ERROR: empty env AWS_ACCESS_KEY_ID"
+    echo "# ERROR: empty env AWS_ACCESS_KEY_ID"
     echo "exit 1"
     sleep 3
     exit 1
 else
-    echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+    echo "# AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
 fi
 
-echo "#Debug $0"
+echo "# Debug $0"
 echo "# S3_BUCKET_NAME=${S3_BUCKET_NAME} tardirectory=${tardirectory}"
 echo "# d=${d} f=${f}"
 echo "# s3_tags=${s3_tags}"
