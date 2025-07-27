@@ -21,19 +21,24 @@ echo "    UPLOAD_MAX_BYTES_PER_SEC=${UPLOAD_MAX_BYTES_PER_SEC}  UPLOAD_SIZE_BYTE
 #   --cursor --name "tar" --fineta |\
 #pv -t -r -b --wait \
 #   --cursor --name "xz" |\
-nice -n18 tar --create -f - \
+if  [[ "${testrun}" == "true"]]; then
+    echo "# Testrun: uploading small test data to s3, just creating tar.gz file ..."
+    f="testrun/${f}"
+    echo "Test data $(date -Is)" | gzip | aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
+else
+    nice -n18 tar --create -f - \
             --sparse --recursion \
             -C ${tardirectory} \
             --exclude "data/event-log" \
             data |\
-nice -n19 gzip |\
-pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" \
-    --size "${UPLOAD_SIZE_BYTES_EST}" \
-    --interval 30 --delay-start 20 \
-    --force --format $' %t %r %p %e  \n' \
-    --buffer-size 100m |\
-aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
-
+    nice -n19 gzip |\
+    pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" \
+        --size "${UPLOAD_SIZE_BYTES_EST}" \
+        --interval 30 --delay-start 20 \
+        --force --format $' %t %r %p %e  \n' \
+        --buffer-size 100m |\
+    aws s3 cp - s3://${S3_BUCKET_NAME}/${f}
+fi
 # --expected-size $((1024*1024*300)) 
 ElapsedTime
 echo "# Upload to s3 done. adding tags ..."
