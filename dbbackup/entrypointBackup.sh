@@ -7,7 +7,7 @@ aws s3 ls s3://${S3_BUCKET_NAME}/${basefilename}/
 
 ElapsedTime
 UPLOAD_MAX_BYTES_PER_SEC="${UPLOAD_MAX_BYTES_PER_SEC:-1024k}"
-UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-250M}"
+UPLOAD_SIZE_BYTES_EST="${UPLOAD_SIZE_BYTES_EST:-280M}"
 # 2025-07 ave size 240MB
 # 2023-01-01 @128k backup to s3 24min, size in s3 183MB , rateimit to prevent high cpu usage
 #  .b try 256k used to high cpu go xz and tar
@@ -26,9 +26,7 @@ nice -n18 tar --create -f - \
             -C ${tardirectory} \
             --exclude "data/event-log" \
             data |\
-nice -n19 xz --compress -5 \
-            --check=crc64 \
-            --memlimit=200MiB - |\
+nice -n19 gzip |\
 pv --rate-limit "${UPLOAD_MAX_BYTES_PER_SEC}" \
     --size "${UPLOAD_SIZE_BYTES_EST}" \
     --interval 30 --delay-start 20 \

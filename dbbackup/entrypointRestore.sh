@@ -27,7 +27,7 @@ fi
 
 # 2022-12-08 tar error:: tar: data/event-log: file changed as we read it
 time aws s3 cp s3://${S3_BUCKET_NAME}/${FILE} - |\
-    xz --decompress - |\
+    gunzip |\
     tar --extract -f - \
         -C ${tardirectory} 
 if [[ $? == 0 ]]; then

@@ -10,7 +10,7 @@ basefilename="moinmoin"
 d="$(env TZ=Pacific/Auckland date +%F-%Hh%M%z)"
 backupHostname=$(hostname)
 # FullName
-f="${basefilename}/$(date +%Y)/$d-${basefilename}-${backupHostname:-vigor}.tar.xz"
+f="${basefilename}/$(date +%Y)/$d-${basefilename}-${backupHostname:-vigor}.tar.gz"
 
 # Set s3 object tag for first day of month - used for s3 tags
 day_of_month="$(env TZ=Pacific/Auckland date +%d)"
